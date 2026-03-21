@@ -12,11 +12,20 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * Controlador de la pantalla de inicio.
+ * Permite ingresar la palabra secreta y pasar al juego.
+ */
 public class InitController {
 
     @FXML
     private TextField txtPalabra;
 
+    /**
+     * Maneja el evento de clic en el botón Jugar.
+     * Valida la palabra y carga la vista del juego si es válida.
+     * @param event Evento de acción generado por el botón.
+     */
     @FXML
     public void onJugarClick(ActionEvent event) {
         // Obtenemos el texto y quitamos espacios al inicio y final

@@ -12,10 +12,18 @@ import javafx.scene.control.Alert.AlertType;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Controlador principal del juego Ahorcado Lunar.
+ * Gestiona la lógica de interacción, intentos, ayudas y efectos visuales.
+ */
 public class GameController {
 
     private int helpsUsed = 0;
 
+    /**
+     * Proporciona una ayuda al usuario, revelando una letra oculta.
+     * Solo se permiten hasta 3 ayudas por partida.
+     */
     @FXML
     public void help() {
         // Limitar a 3 ayudas por partida
@@ -45,6 +53,12 @@ public class GameController {
         // Mostrar la letra en la interfaz
         updateVisibleLetters(formatInputChar(String.valueOf(letterToReveal)));
 
+        // Verificar si ganó tras la ayuda
+        if (checkWin()) {
+            feedbackLabel.setText("¡GANASTE!");
+            letterInput.setDisable(true);
+        }
+
         helpsUsed++;
         mostrarAlerta(AlertType.INFORMATION, "Pista Lunar",
                 "Se ha revelado la letra: " + letterToReveal + "\nTe quedan " + (3 - helpsUsed) + " ayudas.");
@@ -73,6 +87,10 @@ public class GameController {
     private GameModel model;
     private List<TextField> letterFields; // Referencias a los campos generados
 
+    /**
+     * Inicializa el controlador y prepara la interfaz.
+     * El modelo se inicializa cuando se recibe la palabra desde la vista inicial.
+     */
     @FXML
     public void initialize() {
         this.letterFields = new ArrayList<>();
@@ -128,11 +146,17 @@ public class GameController {
         boolean isValid = model.isLetterValid(cleanLetter);
 
         if (isValid) {
-            feedbackLabel.setText("Es correcta");
+            feedbackLabel.setText("Letra correcta");
             updateVisibleLetters(cleanLetter);
+            
+            // Verificar si ganó
+            if (checkWin()) {
+                feedbackLabel.setText("¡GANASTE!");
+                letterInput.setDisable(true);
+            }
 
         } else {
-            feedbackLabel.setText("La letra '" + cleanLetter + "' es incorrecta.");
+            feedbackLabel.setText("Letra incorrecta.");
 
             // Restamos un intento en el modelo
             model.decreaseAttempt();
@@ -142,12 +166,22 @@ public class GameController {
 
             // Verificamos si se quedó sin intentos
             if (model.isGameOver()) {
-                feedbackLabel.setText("¡Juego terminado! Te quedaste sin intentos.");
+                feedbackLabel.setText("¡GAME OVER!");
                 letterInput.setDisable(true); // Bloquea el campo de texto para que no siga jugando
             }
         }
 
         letterInput.clear();
+    }
+
+    // Verifica si el jugador ganó (todos los campos llenosEspecialmente después de descubrir todas las letras)
+    private boolean checkWin() {
+        for (TextField field : letterFields) {
+            if (field.getText().isEmpty()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private void updateSunEffect() {

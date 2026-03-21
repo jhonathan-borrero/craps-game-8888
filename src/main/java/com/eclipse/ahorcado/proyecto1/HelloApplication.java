@@ -7,7 +7,15 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * Clase principal que inicia la aplicación JavaFX para el juego Ahorcado Lunar.
+ */
 public class HelloApplication extends Application {
+    /**
+     * Inicia la aplicación y muestra la ventana principal.
+     * @param stage Escenario principal de JavaFX.
+     * @throws IOException Si ocurre un error al cargar la vista.
+     */
     @Override
     public void start(Stage stage) throws IOException {
         var resource = HelloApplication.class.getResource("init.fxml");

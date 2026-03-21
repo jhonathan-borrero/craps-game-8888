@@ -1,3 +1,6 @@
+/**
+ * Módulo principal del proyecto Ahorcado Lunar.
+ */
 module com.eclipse.ahorcado.proyecto1 {
     requires javafx.controls;
     requires javafx.fxml;

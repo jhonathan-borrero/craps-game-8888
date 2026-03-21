@@ -12,24 +12,34 @@
   <items>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
          <children>
-            <HBox fx:id="wordContainer" alignment="CENTER" layoutX="154.0" layoutY="69.0" prefHeight="100.0" prefWidth="291.0" spacing="10.0" style="-fx-background-color: #C9C8C3; -fx-background-radius: black; -fx-border-color: white; -fx-border-radius: 20px;" />
-            <Label layoutX="156.0" layoutY="22.0" text="ADIVINA LA PALABRA DESCONOCIDA" textFill="#f8f8f8">
+            <HBox fx:id="wordContainer" alignment="CENTER" layoutX="154.0" layoutY="62.0" prefHeight="100.0" prefWidth="291.0" spacing="10.0" style="-fx-background-color: #C9C8C3; -fx-background-radius: black; -fx-border-color: white; -fx-border-radius: 20px;" />
+            <Label layoutX="146.0" layoutY="22.0" text="ADIVINA LA PALABRA DESCONOCIDA" textFill="#f8f8f8">
                <font>
                   <Font name="System Bold" size="17.0" />
+               </font>
+            </Label>
+            <Label fx:id="attemptsLabel" layoutX="222.0" layoutY="175.0" prefHeight="21.0" prefWidth="154.0" text="Intentos restantes: 5" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="15.0" />
                </font>
             </Label>
          </children></AnchorPane>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
          <children>
-            <TextField fx:id="letterInput" alignment="CENTER" layoutX="225.0" layoutY="86.0" promptText="INGRESA LA LETRA" style="-fx-border-radius: 2px; -fx-border-color: black;">
+            <TextField fx:id="letterInput" alignment="CENTER" layoutX="218.0" layoutY="64.0" promptText="INGRESA LA LETRA" style="-fx-border-radius: 2px; -fx-border-color: black;">
                <font>
                   <Font name="System Bold Italic" size="12.0" />
                </font></TextField>
-            <Label fx:id="feedbackLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="225.0" layoutY="59.0" textFill="WHITE">
+            <Label fx:id="feedbackLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="218.0" layoutY="6.0" prefHeight="39.0" prefWidth="162.0" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font></Label>
-            <Button layoutX="271.0" layoutY="127.0" mnemonicParsing="false" onAction="#handleVerifyLetter" style="-fx-background-color: #F0B437;" text="ADIVINAR" textOverrun="CLIP">
+            <Button layoutX="265.0" layoutY="101.0" mnemonicParsing="false" onAction="#handleVerifyLetter" style="-fx-background-color: #F0B437;" text="ADIVINAR" textOverrun="CLIP">
+               <font>
+                  <Font name="Arial Bold" size="11.0" />
+               </font>
+            </Button>
+            <Button layoutX="272.0" layoutY="139.0" mnemonicParsing="false" onAction="#help" style="-fx-background-color: #F0B437;" text="AYUDA" textOverrun="CLIP">
                <font>
                   <Font name="Arial Bold" size="11.0" />
                </font>
