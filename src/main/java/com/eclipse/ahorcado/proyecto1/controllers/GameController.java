@@ -40,8 +40,13 @@ public class GameController {
     }
 
     // Genera un TextField bloqueado por cada letra de la palabra secreta
-   private void generateWordFields() {
+    private void generateWordFields() {
+        // Limpiar los campos anteriores si existen
+        letterFields.clear();
+        wordContainer.getChildren().clear();
+        
         int wordLength = model.getSecretWord().length();
+        System.out.println("Palabra secreta: " + model.getSecretWord() + ", Longitud: " + wordLength);
 
         for (int i = 0; i < wordLength; i++) {
             TextField field = new TextField();

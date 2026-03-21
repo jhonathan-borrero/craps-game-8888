@@ -10,7 +10,11 @@ import java.io.IOException;
 public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("game.fxml"));
+        var resource = HelloApplication.class.getResource("init.fxml");
+        if (resource == null) {
+            throw new RuntimeException("Cannot find init.fxml resource");
+        }
+        FXMLLoader fxmlLoader = new FXMLLoader(resource);
         Scene scene = new Scene(fxmlLoader.load(), 600, 500);
         stage.setTitle("Ahorcado Lunar");
         stage.setScene(scene);
