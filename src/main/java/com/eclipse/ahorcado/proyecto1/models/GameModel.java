@@ -8,10 +8,12 @@ import java.util.List;
 public class GameModel {
     private String secretWord;
     private String normalizedSecretWord;
+    private int remainingAttempts;
 
     public GameModel() {
-        this.secretWord = "ÁRBOL";
+        this.secretWord = "ÁRBOL"; // Valor por defecto
         this.normalizedSecretWord = removeAccents(this.secretWord).toUpperCase();
+        this.remainingAttempts = 5;
     }
 
     public void setSecretWord(String secretWord) {
@@ -19,7 +21,7 @@ public class GameModel {
         this.normalizedSecretWord = removeAccents(this.secretWord).toUpperCase();
     }
 
-    // 3. Método para leer la palabra (que ya usas en tu GameController)
+    // Método para leer la palabra
     public String getSecretWord() {
         return this.secretWord;
     }
@@ -33,6 +35,20 @@ public class GameModel {
             }
         }
         return positions;
+    }
+
+    public int getRemainingAttempts() {
+        return remainingAttempts;
+    }
+
+    public void decreaseAttempt() {
+        if (this.remainingAttempts > 0) {
+            this.remainingAttempts--;
+        }
+    }
+
+    public boolean isGameOver() {
+        return this.remainingAttempts == 0;
     }
 
     public boolean isLetterValid(char letter) {

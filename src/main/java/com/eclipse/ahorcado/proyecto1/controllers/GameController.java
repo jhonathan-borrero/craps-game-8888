@@ -20,33 +20,41 @@ public class GameController {
     @FXML
     private HBox wordContainer; // Contenedor para los campos dinamicos
 
+    @FXML
+    private Label attemptsLabel; // Texto de intentos
+
     private GameModel model;
     private List<TextField> letterFields; // Guarda las referencias a los campos generados
 
     @FXML
     public void initialize() {
         this.letterFields = new ArrayList<>();
-        // this.model = new GameModel(); // Borra esto de aquí, lo inicializamos cuando llegue la palabra
-        // generateWordFields(); // Borra esto también
     }
 
-    // NUEVO MÉTODO: Lo llama el InicioController
+
     public void iniciarJuegoConPalabra(String palabraSecreta) {
-        // Debes asegurar que tu GameModel pueda recibir esta palabra en el constructor o en un setter
         this.model = new GameModel();
-        this.model.setSecretWord(palabraSecreta); // <-- Asegúrate de tener este método en tu GameModel
+        this.model.setSecretWord(palabraSecreta);
 
         generateWordFields();
+
+        // Forzamos el color del texto a blanco para que resalte y no se vea gris
+        if (attemptsLabel != null) {
+            attemptsLabel.setStyle("-fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold;");
+        }
+
+        // Llamamos al efecto desde el inicio para que marque "Intentos: 5"
+        // y aplique el fondo inicial al wordContainer
+        updateSunEffect();
     }
 
     // Genera un TextField bloqueado por cada letra de la palabra secreta
     private void generateWordFields() {
-        // Limpiar los campos anteriores si existen
+        // Limpia los campos anteriores si existen
         letterFields.clear();
         wordContainer.getChildren().clear();
         
         int wordLength = model.getSecretWord().length();
-        System.out.println("Palabra secreta: " + model.getSecretWord() + ", Longitud: " + wordLength);
 
         for (int i = 0; i < wordLength; i++) {
             TextField field = new TextField();
@@ -74,11 +82,47 @@ public class GameController {
         if (isValid) {
             feedbackLabel.setText("La letra '" + cleanLetter + "' es valida.");
             updateVisibleLetters(cleanLetter);
+
         } else {
             feedbackLabel.setText("La letra '" + cleanLetter + "' es incorrecta.");
+
+            // Restamos un intento en el modelo
+            model.decreaseAttempt();
+
+            // Actualizamos el color del contenedor y el texto de intentos
+            updateSunEffect();
+
+            // Verificamos si se quedó sin intentos
+            if (model.isGameOver()) {
+                feedbackLabel.setText("¡Juego terminado! Te quedaste sin intentos.");
+                letterInput.setDisable(true); // Bloquea el campo de texto para que no siga jugando
+            }
         }
 
         letterInput.clear();
+    }
+
+    private void updateSunEffect() {
+        int attempts = model.getRemainingAttempts();
+
+        // Actualizamos el texto si existe
+        if (attemptsLabel != null) {
+            attemptsLabel.setText("Intentos restantes: " + attempts);
+        }
+
+        // Calculamos el porcentaje de error
+        int errors = 5 - attempts;
+        int orangePercentage = errors * 20;
+
+        // Le aplicamos el estilo directamente al HBox que ya tenias (wordContainer)
+        if (wordContainer != null) {
+            String cssStyle = String.format(
+                    "-fx-background-color: linear-gradient(to top, #FFA500 %d%%, #cccccc %d%%); " +
+                            "-fx-background-radius: 15;",
+                    orangePercentage, orangePercentage
+            );
+            wordContainer.setStyle(cssStyle);
+        }
     }
 
     // Revela la letra en los campos correspondientes usando su posicion
