@@ -1,6 +1,5 @@
 package com.eclipse.ahorcado.proyecto1.models;
 
-import com.eclipse.ahorcado.proyecto1.models.GameModel;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,21 +9,25 @@ public class GameModel {
     private String normalizedSecretWord;
 
     public GameModel() {
-        this.secretWord = "ÁRBOL";
-        this.normalizedSecretWord = removeAccents(this.secretWord).toUpperCase();
+        // Inicializar vacío; la palabra se asignará desde el controlador de inicio
+        this.secretWord = "";
+        this.normalizedSecretWord = "";
     }
 
     public void setSecretWord(String secretWord) {
-        this.secretWord = secretWord;
-        this.normalizedSecretWord = removeAccents(this.secretWord).toUpperCase();
+        this.secretWord = secretWord.toUpperCase();
+        // Guardar una versión sin acentos para comparar entradas del usuario
+        this.normalizedSecretWord = removeAccents(this.secretWord);
     }
 
-    // 3. Método para leer la palabra (que ya usas en tu GameController)
     public String getSecretWord() {
         return this.secretWord;
     }
 
-    // Retorna una lista con los indices donde aparece la letra adivinada
+    public boolean isLetterValid(char letter) {
+        return this.normalizedSecretWord.indexOf(letter) >= 0;
+    }
+
     public List<Integer> getLetterPositions(char letter) {
         List<Integer> positions = new ArrayList<>();
         for (int i = 0; i < this.normalizedSecretWord.length(); i++) {
@@ -33,10 +36,6 @@ public class GameModel {
             }
         }
         return positions;
-    }
-
-    public boolean isLetterValid(char letter) {
-        return this.normalizedSecretWord.indexOf(letter) >= 0;
     }
 
     private String removeAccents(String text) {
