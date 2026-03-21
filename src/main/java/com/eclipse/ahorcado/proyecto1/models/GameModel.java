@@ -14,8 +14,13 @@ public class GameModel {
         this.normalizedSecretWord = removeAccents(this.secretWord).toUpperCase();
     }
 
+    public void setSecretWord(String secretWord) {
+        this.secretWord = secretWord;
+    }
+
+    // 3. Método para leer la palabra (que ya usas en tu GameController)
     public String getSecretWord() {
-        return secretWord;
+        return this.secretWord;
     }
 
     // Retorna una lista con los indices donde aparece la letra adivinada
