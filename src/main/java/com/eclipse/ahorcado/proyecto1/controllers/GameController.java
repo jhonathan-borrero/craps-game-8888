@@ -67,6 +67,9 @@ public class GameController {
     @FXML
     private HBox wordContainer; // Contenedor para los campos de las letras
 
+    @FXML
+    private Label attemptsLabel; // Texto de intentos
+
     private GameModel model;
     private List<TextField> letterFields; // Referencias a los campos generados
 
@@ -82,10 +85,23 @@ public class GameController {
         this.model.setSecretWord(palabraSecreta);
 
         generateWordFields();
+
+        // Forzamos el color del texto a blanco para que resalte y no se vea gris
+        if (attemptsLabel != null) {
+            attemptsLabel.setStyle("-fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold;");
+        }
+
+        // Llamamos al efecto desde el inicio para que marque "Intentos: 5"
+        // y aplique el fondo inicial al wordContainer
+        updateSunEffect();
     }
 
     // Crea un TextField no editable por cada letra de la palabra secreta
     private void generateWordFields() {
+        // Limpia los campos anteriores si existen
+        letterFields.clear();
+        wordContainer.getChildren().clear();
+        
         int wordLength = model.getSecretWord().length();
 
         for (int i = 0; i < wordLength; i++) {
@@ -114,14 +130,50 @@ public class GameController {
         if (isValid) {
             feedbackLabel.setText("Es correcta");
             updateVisibleLetters(cleanLetter);
+
         } else {
-            feedbackLabel.setText("Es incorrecta");
+            feedbackLabel.setText("La letra '" + cleanLetter + "' es incorrecta.");
+
+            // Restamos un intento en el modelo
+            model.decreaseAttempt();
+
+            // Actualizamos el color del contenedor y el texto de intentos
+            updateSunEffect();
+
+            // Verificamos si se quedó sin intentos
+            if (model.isGameOver()) {
+                feedbackLabel.setText("¡Juego terminado! Te quedaste sin intentos.");
+                letterInput.setDisable(true); // Bloquea el campo de texto para que no siga jugando
+            }
         }
 
         letterInput.clear();
     }
 
-    // Muestra la letra en las posiciones correspondientes
+    private void updateSunEffect() {
+        int attempts = model.getRemainingAttempts();
+
+        // Actualizamos el texto si existe
+        if (attemptsLabel != null) {
+            attemptsLabel.setText("Intentos restantes: " + attempts);
+        }
+
+        // Calculamos el porcentaje de error
+        int errors = 5 - attempts;
+        int orangePercentage = errors * 20;
+
+        // Le aplicamos el estilo directamente al HBox que ya tenias (wordContainer)
+        if (wordContainer != null) {
+            String cssStyle = String.format(
+                    "-fx-background-color: linear-gradient(to top, #FFA500 %d%%, #cccccc %d%%); " +
+                            "-fx-background-radius: 15;",
+                    orangePercentage, orangePercentage
+            );
+            wordContainer.setStyle(cssStyle);
+        }
+    }
+
+    // Revela la letra en los campos correspondientes usando su posicion
     private void updateVisibleLetters(char cleanLetter) {
         List<Integer> positions = model.getLetterPositions(cleanLetter);
         String originalWord = model.getSecretWord();

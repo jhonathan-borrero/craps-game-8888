@@ -7,11 +7,13 @@ import java.util.List;
 public class GameModel {
     private String secretWord;
     private String normalizedSecretWord;
+    private int remainingAttempts;
 
     public GameModel() {
         // Inicializar vacío; la palabra se asignará desde el controlador de inicio
         this.secretWord = "";
         this.normalizedSecretWord = "";
+        this.remainingAttempts = 5;
     }
 
     public void setSecretWord(String secretWord) {
@@ -36,6 +38,20 @@ public class GameModel {
             }
         }
         return positions;
+    }
+
+    public int getRemainingAttempts() {
+        return remainingAttempts;
+    }
+
+    public void decreaseAttempt() {
+        if (this.remainingAttempts > 0) {
+            this.remainingAttempts--;
+        }
+    }
+
+    public boolean isGameOver() {
+        return this.remainingAttempts == 0;
     }
 
     private String removeAccents(String text) {
