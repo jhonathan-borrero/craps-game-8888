@@ -25,13 +25,22 @@ public class GameController {
 
     @FXML
     public void initialize() {
-        this.model = new GameModel();
         this.letterFields = new ArrayList<>();
+        // this.model = new GameModel(); // Borra esto de aquí, lo inicializamos cuando llegue la palabra
+        // generateWordFields(); // Borra esto también
+    }
+
+    // NUEVO MÉTODO: Lo llama el InicioController
+    public void iniciarJuegoConPalabra(String palabraSecreta) {
+        // Debes asegurar que tu GameModel pueda recibir esta palabra en el constructor o en un setter
+        this.model = new GameModel();
+        this.model.setSecretWord(palabraSecreta); // <-- Asegúrate de tener este método en tu GameModel
+
         generateWordFields();
     }
 
     // Genera un TextField bloqueado por cada letra de la palabra secreta
-    private void generateWordFields() {
+   private void generateWordFields() {
         int wordLength = model.getSecretWord().length();
 
         for (int i = 0; i < wordLength; i++) {
