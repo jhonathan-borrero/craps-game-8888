@@ -7,9 +7,56 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import java.text.Normalizer;
 import java.util.ArrayList;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import java.util.List;
+import java.util.Random;
 
 public class GameController {
+
+    private int helpsUsed = 0;
+
+    @FXML
+    public void help() {
+        // Limitar a 3 ayudas por partida
+        if (helpsUsed >= 3) {
+            mostrarAlerta(AlertType.WARNING, "Sin Pistas", "Has agotado tus 3 ayudas lunares en esta partida.");
+            return;
+        }
+
+        // Buscar posiciones de letras aún ocultas
+        List<Integer> hiddenIndices = new ArrayList<>();
+        for (int i = 0; i < letterFields.size(); i++) {
+            if (letterFields.get(i).getText().isEmpty()) {
+                hiddenIndices.add(i);
+            }
+        }
+
+        if (hiddenIndices.isEmpty()) {
+            mostrarAlerta(AlertType.INFORMATION, "¡Casi listo!", "¡Ya no hay más letras que revelar!");
+            return;
+        }
+
+        // Elegir una letra aleatoria entre las ocultas y mostrarla
+        Random random = new Random();
+        int randomIndex = hiddenIndices.get(random.nextInt(hiddenIndices.size()));
+        char letterToReveal = model.getSecretWord().charAt(randomIndex);
+
+        // Mostrar la letra en la interfaz
+        updateVisibleLetters(formatInputChar(String.valueOf(letterToReveal)));
+
+        helpsUsed++;
+        mostrarAlerta(AlertType.INFORMATION, "Pista Lunar",
+                "Se ha revelado la letra: " + letterToReveal + "\nTe quedan " + (3 - helpsUsed) + " ayudas.");
+    }
+
+    private void mostrarAlerta(AlertType tipo, String titulo, String mensaje) {
+        Alert alert = new Alert(tipo);
+        alert.setTitle(titulo);
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+        alert.showAndWait();
+    }
 
     @FXML
     private TextField letterInput;
@@ -18,35 +65,33 @@ public class GameController {
     private Label feedbackLabel;
 
     @FXML
-    private HBox wordContainer; // Contenedor para los campos dinamicos
+    private HBox wordContainer; // Contenedor para los campos de las letras
 
     private GameModel model;
-    private List<TextField> letterFields; // Guarda las referencias a los campos generados
+    private List<TextField> letterFields; // Referencias a los campos generados
 
     @FXML
     public void initialize() {
         this.letterFields = new ArrayList<>();
-        // this.model = new GameModel(); // Borra esto de aquí, lo inicializamos cuando llegue la palabra
-        // generateWordFields(); // Borra esto también
+        // El modelo se inicializa cuando se recibe la palabra desde la vista inicial
     }
 
-    // NUEVO MÉTODO: Lo llama el InicioController
+    // Inicializa el juego con la palabra recibida desde InitController
     public void iniciarJuegoConPalabra(String palabraSecreta) {
-        // Debes asegurar que tu GameModel pueda recibir esta palabra en el constructor o en un setter
         this.model = new GameModel();
-        this.model.setSecretWord(palabraSecreta); // <-- Asegúrate de tener este método en tu GameModel
+        this.model.setSecretWord(palabraSecreta);
 
         generateWordFields();
     }
 
-    // Genera un TextField bloqueado por cada letra de la palabra secreta
+    // Crea un TextField no editable por cada letra de la palabra secreta
    private void generateWordFields() {
         int wordLength = model.getSecretWord().length();
 
         for (int i = 0; i < wordLength; i++) {
             TextField field = new TextField();
             field.setPrefWidth(40);
-            field.setEditable(false); // El usuario no escribe directamente aqui
+            field.setEditable(false);
             field.setStyle("-fx-alignment: center; -fx-font-size: 16px;");
 
             letterFields.add(field);
@@ -59,7 +104,7 @@ public class GameController {
         String input = letterInput.getText();
 
         if (input == null || input.trim().length() != 1) {
-            feedbackLabel.setText("Entrada invalida. Ingrese solo una letra.");
+            feedbackLabel.setText("Entrada inválida");
             return;
         }
 
@@ -67,22 +112,22 @@ public class GameController {
         boolean isValid = model.isLetterValid(cleanLetter);
 
         if (isValid) {
-            feedbackLabel.setText("La letra '" + cleanLetter + "' es valida.");
+            feedbackLabel.setText("Es correcta");
             updateVisibleLetters(cleanLetter);
         } else {
-            feedbackLabel.setText("La letra '" + cleanLetter + "' es incorrecta.");
+            feedbackLabel.setText("Es incorrecta");
         }
 
         letterInput.clear();
     }
 
-    // Revela la letra en los campos correspondientes usando su posicion
+    // Muestra la letra en las posiciones correspondientes
     private void updateVisibleLetters(char cleanLetter) {
         List<Integer> positions = model.getLetterPositions(cleanLetter);
         String originalWord = model.getSecretWord();
 
         for (int pos : positions) {
-            // Obtenemos la letra original (con acento si lo tenia) basandonos en la posicion
+            // Tomar la letra original de la palabra (incluye acentos si existen)
             char originalChar = originalWord.charAt(pos);
             letterFields.get(pos).setText(String.valueOf(originalChar));
         }
