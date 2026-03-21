@@ -11,39 +11,41 @@
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #2B2A2A;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.eclipse.ahorcado.proyecto1.controllers.InitController" >
-   <children>
-      <VBox alignment="CENTER" layoutX="70.0" prefHeight="400.0" prefWidth="479.0" spacing="20.0">
-         <children>
-            <StackPane prefHeight="220.0" prefWidth="341.0">
-               <children>
-                  <ImageView fitHeight="220.0" fitWidth="276.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@images/Eclipse_solar_con_corona_ardiente.png" />
-                     </image>
-                  </ImageView>
-               </children>
-            </StackPane>
-            <Label text="AHORCADO LUNAR" textFill="WHITE">
-               <font>
-                  <Font name="System Bold Italic" size="24.0" />
-               </font>
-            </Label>
-            <Label textFill="WHITE">
-               <font>
-                  <Font size="24.0" />
-               </font>
-               <graphic>
-                  <TextField fx:id="txtPalabra" promptText="PALABRA SECRETA">
-                     <font>
-                        <Font name="System Italic" size="13.0" />
-                     </font></TextField>
-               </graphic>
-            </Label>
-            <Button onAction="#onJugarClick" mnemonicParsing="false" style="-fx-background-color: #916406; -fx-background-color: #D99C1A; -fx-text-fill: WHITE; -fx-background-radius: 5;" text="JUGAR">
-               <font>
-                  <Font name="System Bold" size="11.0" />
-               </font></Button>
-         </children>
-      </VBox>
-   </children>
+    <children>
+        <VBox alignment="CENTER" layoutX="70.0" prefHeight="400.0" prefWidth="479.0" spacing="20.0">
+            <children>
+                <StackPane prefHeight="220.0" prefWidth="341.0">
+                    <children>
+                        <ImageView fitHeight="220.0" fitWidth="276.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@images/Eclipse_solar_con_corona_ardiente.png" />
+                            </image>
+                        </ImageView>
+                    </children>
+                </StackPane>
+                <Label text="AHORCADO LUNAR" textFill="WHITE">
+                    <font>
+                        <Font name="System Bold Italic" size="24.0" />
+                    </font>
+                </Label>
+                <Label textFill="WHITE">
+                    <font>
+                        <Font size="24.0" />
+                    </font>
+                    <graphic>
+                        <TextField fx:id="txtPalabra" promptText="PALABRA SECRETA">
+                            <font>
+                                <Font name="System Italic" size="13.0" />
+                            </font>
+                        </TextField>
+                    </graphic>
+                </Label>
+                <Button onAction="#onJugarClick" mnemonicParsing="false" style="-fx-background-color: #916406; -fx-background-color: #D99C1A; -fx-text-fill: WHITE; -fx-background-radius: 5;" text="JUGAR">
+                    <font>
+                        <Font name="System Bold" size="11.0" />
+                    </font>
+                </Button>
+            </children>
+        </VBox>
+    </children>
 </AnchorPane>
