@@ -39,7 +39,7 @@
                   <Font name="Arial Bold" size="11.0" />
                </font>
             </Button>
-            <Button layoutX="272.0" layoutY="139.0" mnemonicParsing="false" onAction="#help" style="-fx-background-color: #F0B437;" text="AYUDA" textOverrun="CLIP">
+            <Button fx:id="helpButton" layoutX="272.0" layoutY="139.0" mnemonicParsing="false" onAction="#help" style="-fx-background-color: #F0B437;" text="AYUDA" textOverrun="CLIP">
                <font>
                   <Font name="Arial Bold" size="11.0" />
                </font>

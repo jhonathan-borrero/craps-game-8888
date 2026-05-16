@@ -11,6 +11,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import java.util.List;
 import java.util.Random;
+import javafx.scene.control.Button;
 
 /**
  * Controlador principal del juego Ahorcado Lunar.
@@ -41,7 +42,7 @@ public class GameController {
         }
 
         if (hiddenIndices.isEmpty()) {
-            mostrarAlerta(AlertType.INFORMATION, "¡Casi listo!", "¡Ya no hay más letras que revelar!");
+            mostrarAlerta(AlertType.INFORMATION, "¡Revisa!", "¡Ya no hay más letras que revelar!");
             return;
         }
 
@@ -53,13 +54,15 @@ public class GameController {
         // Mostrar la letra en la interfaz
         updateVisibleLetters(formatInputChar(String.valueOf(letterToReveal)));
 
+        // Incrementar el contador de ayudas usadas
+        helpsUsed++;
+
         // Verificar si ganó tras la ayuda
         if (checkWin()) {
             feedbackLabel.setText("¡GANASTE!");
             letterInput.setDisable(true);
         }
 
-        helpsUsed++;
         mostrarAlerta(AlertType.INFORMATION, "Pista Lunar",
                 "Se ha revelado la letra: " + letterToReveal + "\nTe quedan " + (3 - helpsUsed) + " ayudas.");
     }
@@ -71,6 +74,9 @@ public class GameController {
         alert.setContentText(mensaje);
         alert.showAndWait();
     }
+
+    @FXML
+    private Button helpButton;
 
     @FXML
     private TextField letterInput;
@@ -168,6 +174,7 @@ public class GameController {
             if (model.isGameOver()) {
                 feedbackLabel.setText("¡GAME OVER!");
                 letterInput.setDisable(true); // Bloquea el campo de texto para que no siga jugando
+                helpButton.setDisable(true);
             }
         }
 

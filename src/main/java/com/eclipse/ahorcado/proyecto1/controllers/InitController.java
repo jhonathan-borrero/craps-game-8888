@@ -31,8 +31,8 @@ public class InitController {
         // Obtenemos el texto y quitamos espacios al inicio y final
         String palabra = txtPalabra.getText().trim();
 
-        // Validación: Solo letras de la A a la Z (mayúsculas o minúsculas), entre 6 y 12 caracteres
-        if (palabra.matches("^[a-zA-Z]{6,12}$")) {
+        // Validación: Solo letras (incluyendo acentos y ñ), entre 6 y 12 caracteres
+        if (palabra.matches("^\\p{L}{6,12}$")) {
             // Si es válida, cargamos la siguiente vista y le pasamos la palabra
             cargarVistaJuego(event, palabra.toUpperCase());
         } else {
